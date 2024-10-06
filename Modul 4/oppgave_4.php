@@ -20,7 +20,7 @@ $roomtypes = [
     $junior_suite = [
         $name = "Junior Suite",
         $space = 2,
-        $price = "2500 kr",
+        $price = "2500 kr"
         $description = "A room for two people with a living room."
     ]
 ];
