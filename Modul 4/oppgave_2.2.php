@@ -8,12 +8,16 @@
 </head>
 <body>
     <h1>The signup was successful.</h1>
+    <hr>
     <?php
-    echo "<strong>Sign-up Information</strong>";
-    echo "First name: " . $_POST["firstName"] . "<br>";
+    
+
+    echo "<strong>Sign-up Information</strong><br>";
+    echo "<hr>";
+    echo "<strong>First name: </strong>" . $_POST["firstName"] . "<br>";
     echo "Last name: " . $_POST["lastName"] . "<br>";
     echo "Email: " . $_POST["email"] . "<br>";
-    echo "Telephone Number: " . $_POST["phone"] . "<br>";
+    echo "Telephone Number: " . $phone . "<br>";
     
     ?>
 </body>
