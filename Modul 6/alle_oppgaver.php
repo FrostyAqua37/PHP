@@ -1,6 +1,6 @@
 <?php 
 
-//Oppgave 1 og 3
+//Oppgave 1
 class User {
     public $firstName;
     public $surname;
@@ -10,17 +10,23 @@ class User {
     protected static $deletedUsers = array();
 
     public function __construct($registrationDate = "20.10.24") {
-        $length = 10;
         $username = array_merge(range("a", "z"), range("A", "Z"), range(0, 9));
         shuffle($username);
-        $username = substr(implode($username), 0, $length);
+        $username = substr(implode($username), 0, 10);
         return $username;
     } 
 
+    //oppgave 3
     public function __destruct() {
-        array_push(self::$deletedUsers, $this->firstName, $this->surname, $this->username, $this->registrationDate);
-        echo '<pre>'; print_r(self::$deletedUsers); echo '</pre>';
-        array_splice(self::$deletedUsers, 0);
+        if(sizeof(self::$deletedUsers) < 2) {
+            array_push(self::$deletedUsers, $this->username);
+        } 
+    }
+
+    function getDeletedUsers() {
+        foreach(self::$deletedUsers as $value) {
+            echo $value . "<br>";
+        }
     }
 
     function setFirstName($firstName) {
@@ -86,17 +92,22 @@ class Validation {
     }
 
     function validatePassword($password) {
-        $frequency = preg_match_all("/[0-9]/", $password);
+        $frequency = preg_match_all("/[0-9]/", $password); //Finds occurrences of numeric values
 
         if(empty(trim($password))) {
+            //Checks if password is empty
             echo "Password cant be empty!";
         } else if(strlen($password) < 9) {
+            //Checks if password has 9 characters
             echo "Password must be atleast 9 characters long. <br>";
         } else if(!preg_match("/[A-Z]/", $password)) {
+            //Checks for capital letter
             echo "Password must contain atleast 1 capital letter. <br>";
         } else if(!preg_match("/[^\w]/", $password)) {
+            //Checks for special characters
             echo "Password must contain atleast 1 special character. <br>";
         } else if($frequency < 2) {
+            //Checks if password has 2 numbers
             echo "Password must contain atleast 2 numbers. <br>";
         } else {
             echo "Password is valid. <br>";
@@ -122,7 +133,9 @@ class Validation {
     }
 }
 
-echo "<br>Oppgave 2: <br>";
+echo "<strong>Modul 6</strong><br>";
+
+echo "Oppgave 2: <br>";
 $user = new User();
 echo $user->login() . "<br>";
 
@@ -136,19 +149,17 @@ $thirdAdmin = new Admin();
 $secondAdmin->createGuest("Eivind", "Chen", $user->__construct(), "09.09.24");
 echo "<br>";
 $thirdAdmin->createGuest("Eric", "Charles", $user->__construct(), "19.10.24");
+echo "<br>";
 
 unset($secondAdmin);
 unset($thirdAdmin);
+
+echo "Deleted users: <br>";
+echo $user->getDeletedUsers();
+
 
 echo "<br>Oppgave 4: <br>";
 $validation = new Validation();
 $validation->validateEmail("1234@gmail.com");
 $validation->validatePassword("Senbonzakura37!");
 $validation->validatePhoneNumber("+47", "123 45 678");
-
-
-
-
-
-
-
