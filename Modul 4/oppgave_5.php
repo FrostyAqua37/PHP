@@ -5,6 +5,7 @@
 
 
 $random_number_array = [];
+
 for($i = 1;$i <= 9;$i++) {
     $random_number_array[] = rand(0, 100);
 }
