@@ -8,6 +8,7 @@ class User {
     public $dateOfBirth;
     protected $registrationDate;
     protected static $deletedUsers = array();
+    protected static $amountOfUsers = 0;
 
     public function __construct($registrationDate = "20.10.24") {
         $username = array_merge(range("a", "z"), range("A", "Z"), range(0, 9));
@@ -18,15 +19,19 @@ class User {
 
     //oppgave 3
     public function __destruct() {
-        if(sizeof(self::$deletedUsers) < 2) {
+        //Stores deleted usernames
+        if(self::$amountOfUsers > 0) {
             array_push(self::$deletedUsers, $this->username);
+            self::$amountOfUsers--;
         } 
     }
 
     function getDeletedUsers() {
         foreach(self::$deletedUsers as $value) {
-            echo $value . "<br>";
+            //Retrieves deleted usernames
+            echo "Username: " . $value . "<br>";
         }
+        echo "<br>Total amount of users: " . self::$amountOfUsers . "<br>";
     }
 
     function setFirstName($firstName) {
@@ -59,6 +64,8 @@ class Admin extends User {
 
     //Oppgave 3
     function createGuest($firstName, $surname, $username, $registrationDate) {
+        self::$amountOfUsers++;
+
         $this->firstName = $firstName;
         $this->surname = $surname;
         $this->username = $username;
@@ -68,6 +75,8 @@ class Admin extends User {
         echo "Surname: " . $this->surname . "<br>";
         echo "Username: " . $this->username . "<br>";
         echo "Registration Date: " . $this->registrationDate . "<br>";
+
+        echo "<br>Total amount of users: " . self::$amountOfUsers . "<br>";
     }
 }
 
@@ -135,7 +144,7 @@ class Validation {
 
 echo "<strong>Modul 6</strong><br>";
 
-echo "Oppgave 2: <br>";
+echo "<br>Oppgave 2: <br>";
 $user = new User();
 echo $user->login() . "<br>";
 
@@ -145,14 +154,19 @@ echo $admin->login() . "<br>";
 echo "Oppgave 3: <br>";
 $secondAdmin = new Admin();
 $thirdAdmin = new Admin();
+$new = new Admin();
 
 $secondAdmin->createGuest("Eivind", "Chen", $user->__construct(), "09.09.24");
 echo "<br>";
 $thirdAdmin->createGuest("Eric", "Charles", $user->__construct(), "19.10.24");
 echo "<br>";
+$new->createGuest("Hello", "World!", $user->__construct(), "23.08.24");
+echo "<br>";
+
 
 unset($secondAdmin);
 unset($thirdAdmin);
+//unset($new);
 
 echo "Deleted users: <br>";
 echo $user->getDeletedUsers();
@@ -161,5 +175,7 @@ echo $user->getDeletedUsers();
 echo "<br>Oppgave 4: <br>";
 $validation = new Validation();
 $validation->validateEmail("1234@gmail.com");
+
+echo "<br>Oppgave 5: <br>";
 $validation->validatePassword("Senbonzakura37!");
 $validation->validatePhoneNumber("+47", "123 45 678");
